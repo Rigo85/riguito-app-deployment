@@ -5,8 +5,9 @@
 
 ## Instalar vim, sudo, xorg, openbox, curl y pulseaudio
 ```
-sudo apt install vim sudo xorg openbox pulseaudio curl
-pulseaudio --start
+$ su
+# apt install vim sudo xorg openbox pulseaudio curl
+$ pulseaudio --start
 ```
 
 ## Editar el archivo /etc/sudoers

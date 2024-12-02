@@ -1,22 +1,20 @@
 # Despliegue de la aplicación de Riguito.
 
-## Instalar Debian 12
-- Instalar solamente ssh y utilidades estándar del sistema.
+## Instalar Ubuntu LXDE
+- Instalar solo lo mínimo necesario.
 
-## Instalar vim, sudo, xorg, openbox, curl y pulseaudio
+## Deshabilitar energía y salvapantalla
 ```
-$ su
-# apt install vim sudo xorg openbox pulseaudio curl
-$ pulseaudio --start
+vim ~/.xinitrc
 ```
-
-## Editar el archivo /etc/sudoers
 ```
-sudo vim /etc/sudoers
+#!/bin/bash
+xset -dpms      # Desactiva el apagado de energía del monitor
+xset s off      # Desactiva el salvapantallas
+xset s noblank  # Evita que la pantalla se ponga en blanco
 ```
-- Agregar la línea:
 ```
-riguito ALL=(ALL) NOPASSWD: ALL
+chmod +x ~/.xinitrc
 ```
 
 ## Agregar repos de firefox
@@ -27,46 +25,6 @@ riguito ALL=(ALL) NOPASSWD: ALL
 ```
 sudo apt update
 sudo apt install firefox
-```
-
-## Agregar el archivo *~/start_firefox.sh*
-
-```
-#!/bin/bash
-
-# Iniciar Openbox en segundo plano
-openbox &
-
-# Iniciar http-server en segundo plano y guardar su PID
-npx http-server -p 8080 -c-1 ~/browser &
-server_pid=$!
-
-# Esperar a que http-server esté listo verificando la disponibilidad del puerto
-while ! nc -z localhost 8080; do
-  sleep 0.1 # Esperar 100ms antes de volver a verificar
-done
-
-# Iniciar Firefox en modo kiosco apuntando al servidor local
-firefox --kiosk "http://localhost:8080"
-
-# Finalizar la sesión del usuario
-pkill -KILL -u $USER
-
-```
-
-## Agregar el archivo *~/.xinitrc*
-```
-#!/bin/sh
-exec ~/start_firefox.sh
-```
-
-## Agregar el archivo *~/.bash_profile*
-```
-if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-fi
-
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 ```
 
 ## Instalar NodeJS
@@ -92,7 +50,7 @@ npm -v # should print `10.9.0`
 npm install -g http-server
 ```
 
-## Copiar o descargar la aplicación de Riguito del repositorio
+## Descargar la aplicación de Riguito del repositorio
 ```
 cd ~
 git clone https://github.com/Rigo85/riguito-app-ng.git
@@ -101,6 +59,23 @@ npm install
 npm run build
 ln -s ~/riguito-app-ng/dist/riguito-app-ng/browser ~/browser
 ```
+- Copiar la data
 
-## Iniciar sesión
+## Deshabilitar las teclas F11 y F12
+```
+nano ~/.Xmodmap
+keycode 95 =
+keycode 96 =
+xmodmap ~/.Xmodmap
+```
 
+## Iniciar el servidor http-server
+```
+cd ~
+npx http-server -p 8080 ~/browser
+```
+
+## Iniciar Firefox en modo kiosco
+``` 
+firefox --kiosk "http://localhost:8080"
+```

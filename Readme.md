@@ -69,13 +69,16 @@ keycode 96 =
 xmodmap ~/.Xmodmap
 ```
 
-## Iniciar el servidor http-server
+## Iniciar el servidor http-server en un tab del terminal
 ```
 cd ~
 npx http-server -p 8080 ~/browser
 ```
 
-## Iniciar Firefox en modo kiosco
+## Iniciar Firefox en modo kiosco en otro tab
 ``` 
 firefox --kiosk "http://localhost:8080"
 ```
+
+## Para salir Alt+F4
+

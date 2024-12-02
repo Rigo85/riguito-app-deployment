@@ -80,5 +80,9 @@ npx http-server -p 8080 ~/browser
 firefox --kiosk "http://localhost:8080"
 ```
 
-## Para salir Alt+F4
+## Para salir 
+- Alt+F4
+
+## Para debuggear
+- Habilitar las teclas F11 y F12
 
